@@ -1,0 +1,43 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Build') {
+            steps {
+                echo 'Compiling the Java application...'
+                sh 'mvn clean compile'
+            }
+        }
+        
+        stage('Test') {
+            steps {
+                echo 'Running unit tests...'
+                sh 'mvn test'
+            }
+        }
+        
+        stage('Package') {
+            steps {
+                echo 'Packaging into a JAR file...'
+                sh 'mvn package -DskipTests'
+            }
+        }
+        
+        // TODO: Uncomment this stage when you reach Page 11 of the PDF
+        /*
+        stage('SonarQube Analysis') {
+            steps {
+                withCredentials([string(credentialsId: 'sonar-token', variable: 'SONAR_TOKEN')]) {
+                    sh '''
+                    mvn clean verify sonar:sonar \
+                      -Dsonar.projectKey=java-maven-project \
+                      -Dsonar.projectName=java-maven-project \
+                      -Dsonar.host.url=http://YOUR_SONAR_IP:9000 \
+                      -Dsonar.token=$SONAR_TOKEN
+                    '''
+                }
+            }
+        }
+        */
+    }
+}
