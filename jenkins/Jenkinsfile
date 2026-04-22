@@ -2,7 +2,7 @@ pipeline {
     agent {
         docker {
             image 'ilyes94/maven-docker-java17'
-            args '-v /root/.m2:/root/.m2 -v /var/run/docker.sock:/var/run/docker.sock --add-host=host.docker.internal:host-gateway'
+            args '-v /root/.m2:/root/.m2 -v /var/run/docker.sock:/var/run/docker.sock --network host'
         }
     }
 
@@ -11,7 +11,7 @@ pipeline {
     }
 
     environment {
-        SONAR_HOST_URL = 'http://host.docker.internal:9000'
+        SONAR_HOST_URL = 'http://localhost:9000'
         DOCKER_CONFIG = '/tmp/.docker'
     }
 
